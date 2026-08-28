@@ -28,6 +28,9 @@ src/client/styles.ts   # theme-token stylesheet
 tests/                 # vitest unit tests (contract + runtime)
 build.mjs              # esbuild dual build (host ESM + client CJS)
 .github/workflows/ci.yml
+dsh-testkit.yaml       # real-host lifecycle expectations
+.github/workflows/dsh-lifecycle.yml
+.agents/skills/dsh-testkit/SKILL.md
 ```
 
 `package.json` is the only manifest Harness needs. `dsh.bundle.patch` makes the package an installable profile bundle; `dsh.client` declares the Web client bundle and the client packages it injects. The host entry is the ordinary Cordis `name`/`apply` export; the client entry is bundled to `lib/client.js` and loaded by the Web harness module loader.
@@ -84,7 +87,16 @@ pnpm run build      # esbuild dual bundle + declaration emit
 pnpm run typecheck  # tsc over src and tests
 pnpm run lint       # eslint
 pnpm run test       # vitest
+pnpm run test:lifecycle # real DSH install, boot, register, remove, and reboot
 ```
+
+## Real-host lifecycle gate
+
+`pnpm run test:lifecycle` first builds a package tarball with the repository's locked toolchain, then uses [DSH Testkit v0.4.0](https://github.com/iiwish/dsh-testkit/releases/tag/v0.4.0) with DSH `0.1.1-rc.2` in Docker. The scenario installs that exact artifact into a real host, verifies the `dsh-plugin-template` row and `greet` service, removes the plugin, and reboots the same profile. It does not need a model API key.
+
+The external-pull-request job explicitly grants only `contents: read`; it runs the pinned npm release directly and retains the evidence without invoking a write-capable third-party Action. The trusted-branch job adds `checks: write` so the pinned Testkit Action can publish its JUnit check. Every referenced Action is pinned to an immutable commit.
+
+The current Testkit scenario observes host registrations; it does not directly assert the client-side `conversation.view` slot. Type-checking and the client build cover its static integration, while the existing unit tests cover the shared contract and host runtime rather than live slot injection.
 
 ## Renaming the package
 

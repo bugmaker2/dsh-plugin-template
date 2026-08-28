@@ -1,5 +1,7 @@
 node_modules/
 lib/
 .pnpm-store/
+.dsh-testkit/
+.dsh-testkit-plugin.tgz
 .DS_Store
 *.log

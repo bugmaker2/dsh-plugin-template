@@ -28,6 +28,9 @@ src/client/styles.ts   # 主题 token 样式
 tests/                 # vitest 单元测试（contract + runtime）
 build.mjs              # esbuild 双端构建（Host ESM + Client CJS）
 .github/workflows/ci.yml
+dsh-testkit.yaml       # 真实 Host 生命周期预期
+.github/workflows/dsh-lifecycle.yml
+.agents/skills/dsh-testkit/SKILL.md
 ```
 
 Harness 唯一需要的 manifest 是 `package.json`：`dsh.bundle.patch` 让包成为可安装的 profile bundle，`dsh.client` 声明 Web 客户端 bundle 及其注入的客户端包。Host 入口是普通 Cordis `name`/`apply` 导出；Client 入口被打包成 `lib/client.js`，由 Web harness 的模块加载器加载。
@@ -84,7 +87,16 @@ pnpm run build      # esbuild 双端打包 + 声明文件生成
 pnpm run typecheck  # 对 src 和 tests 运行 tsc
 pnpm run lint       # eslint
 pnpm run test       # vitest
+pnpm run test:lifecycle # 真实 DSH 的安装、启动、注册、卸载与重启
 ```
+
+## 真实 Host 生命周期门禁
+
+`pnpm run test:lifecycle` 先使用仓库锁定的工具链构建 package tarball，再在 Docker 中使用 [DSH Testkit v0.4.0](https://github.com/iiwish/dsh-testkit/releases/tag/v0.4.0) 和 DSH `0.1.1-rc.2`。场景会将这个确定的制品安装进真实 Host，验证 `dsh-plugin-template` row 和 `greet` service，卸载插件，再重启同一个 profile；不需要模型 API Key。
+
+外部 pull request job 明确只授予 `contents: read`；它直接运行固定的 npm 版本并保留证据，不调用拥有写权限的第三方 Action。可信分支 job 额外获得 `checks: write`，让固定版本的 Testkit Action 发布 JUnit check。所有引用的 Action 都固定到不可变提交。
+
+当前 Testkit 场景观测 Host 注册，尚不直接断言 Client 端的 `conversation.view` slot。类型检查与 Client 构建覆盖其静态集成；现有单元测试覆盖共享 contract 与 Host runtime，不覆盖真实 slot 注入。
 
 ## 重命名包
 

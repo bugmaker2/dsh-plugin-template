@@ -1,0 +1,13 @@
+schemaVersion: 1
+name: dsh-plugin-template-quick
+subject:
+  source: .
+dsh:
+  version: 0.1.1-rc.2
+expect:
+  boot: success
+  rows:
+    - dsh-plugin-template
+  services:
+    - greet
+  tools: []

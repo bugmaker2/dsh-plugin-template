@@ -51,6 +51,9 @@
     "test": "vitest run",
     "lint": "eslint .",
     "check": "pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run build",
+    "dsh-test:pack": "pnpm pack --out .dsh-testkit-plugin.tgz",
+    "dsh-test": "pnpm run dsh-test:pack && pnpm --package=dsh-testkit@0.4.0 dlx dsh-test .dsh-testkit-plugin.tgz --config dsh-testkit.yaml",
+    "test:lifecycle": "pnpm dsh-test",
     "prepare": "pnpm run build",
     "prepublishOnly": "pnpm run check"
   },
