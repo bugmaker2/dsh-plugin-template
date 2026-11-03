@@ -34,9 +34,9 @@ build.mjs              # esbuild dual build (host ESM + client CJS)
 
 ## Requirements
 
-- Node.js `>= 22.19` (or `>= 24`)
+- Node.js `>= 24.9`
 - pnpm `>= 9`
-- DeepSeek Harness `>=0.1.0-rc.6`
+- DeepSeek Harness `>=0.2.2-0 <0.3.0`
 
 ## Install from a local checkout
 

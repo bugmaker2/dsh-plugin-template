@@ -15,9 +15,9 @@ export const nameSchema = z.string().trim().min(1).max(200)
 export const greetResultSchema = z.object({ message: z.string() }).readonly()
 
 const json = (name: string, wire: string, typeSymbol: string, schema: z.ZodType) => ({
-  name, wire, source: 'json' as const, codec: { mode: 'strict' as const, typeSymbol, schema },
+  name, wire, source: 'json' as const, codec: { mode: 'strict' as const, typeSymbol, create: () => schema },
 })
-const resultOf = (typeSymbol: string, schema: z.ZodType) => ({ mode: 'strict' as const, typeSymbol, schema })
+const resultOf = (typeSymbol: string, schema: z.ZodType) => ({ mode: 'strict' as const, typeSymbol, create: () => schema })
 
 const nameParameter = json('name', 'name', 'dsh-plugin-template#Name', nameSchema)
 const greetResult = resultOf('dsh-plugin-template#GreetResult', greetResultSchema)

@@ -34,9 +34,9 @@ Harness 唯一需要的 manifest 是 `package.json`：`dsh.bundle.patch` 让包�
 
 ## 环境要求
 
-- Node.js `>= 22.19`（或 `>= 24`）
+- Node.js `>= 24.9`
 - pnpm `>= 9`
-- DeepSeek Harness `>=0.1.0-rc.6`
+- DeepSeek Harness `>=0.2.2-0 <0.3.0`
 
 ## 从本地目录安装
 

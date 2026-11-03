@@ -4,8 +4,10 @@
  * Mounts the greet Remote namespace, registers locale dictionaries, and
  * injects one conversation.view tab that renders the greet result.
  */
-import type { ClientContext } from '@deepseek-ai/dsh-client-runtime/client'
+import type { Context as ClientContext } from '@deepseek-ai/cordis'
+import type {} from '@deepseek-ai/dsh-api-remotes/client'
 import type {} from '@deepseek-ai/dsh-client-locale/client'
+import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
 import { DSH_TEMPLATE_REMOTE } from './remote.ts'
 import { NS, en, zh } from './locales.ts'
 import { TemplateView, type GreetActions, type TemplateViewSlotProps } from './view.tsx'
